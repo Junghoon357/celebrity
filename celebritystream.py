@@ -35,7 +35,7 @@ def load_label_map():
 def load_model(num_classes):
     model = models.resnet18(pretrained=False)
     model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
-    model.load_state_dict(torch.load("celebrityClassfy.pth", map_location=device))
+    model.load_state_dict(torch.load("best_model.pth", map_location=device))
     model.to(device)
     model.eval()
     return model
