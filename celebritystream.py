@@ -39,11 +39,14 @@ def load_model(num_classes):
 
     num_ftrs = model.fc.in_features
     model.fc = nn.Sequential(
-        nn.Linear(num_ftrs, 1024),
-        nn.ReLU(),
-        nn.Dropout(0.4),
-        nn.Linear(1024, num_classes)
-    )
+    nn.Linear(num_ftrs, 1024),
+    nn.ReLU(),
+    nn.Dropout(0.5),
+    nn.Linear(1024, 512),
+    nn.ReLU(),
+    nn.Dropout(0.3),
+    nn.Linear(512, num_classes)  # 최종 클래스 수
+)
 
     model.load_state_dict(torch.load("best_model.pth", map_location=device))
     model.to(device)
@@ -54,7 +57,7 @@ def load_model(num_classes):
 # [5] Streamlit UI
 # -------------------------------
 st.title("🌟 닮은꼴 연예인 분류기 🌟")
-st.chat_input("성능은 망가져 내렸으니 재미로만 부탁드립니다.ㅠ^ㅠ")
+st.write("성능은 망가져 내렸으니 재미로만 부탁드립니다.ㅠ^ㅠ")
 # 파일 업로드 시
 uploaded_file = st.file_uploader("사진을 업로드해주세요!", type=['jpg', 'jpeg', 'png'])
 
