@@ -12,12 +12,13 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # -------------------------------
 # [2] 전처리 함수 (추론용)
 # -------------------------------
-testset_transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(0.5, 0.2)
-])
-
+testset_transform = transforms.Compose(
+    [
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.5, 0.5,0.5], std=[0.2,0.2,0.2])
+    ]
+)
 # -------------------------------
 # [3] 클래스 매핑 불러오기
 # -------------------------------
