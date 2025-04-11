@@ -3,6 +3,8 @@ from PIL import Image
 import torch
 from torchvision import transforms, models
 import json
+from tqdm import tqdm
+import torchmetrics 
 
 # -------------------------------
 # [1] 기본 설정
@@ -34,12 +36,23 @@ def load_label_map():
 # -------------------------------
 @st.cache_resource
 def load_model(num_classes):
-    model = models.resnet18(pretrained=False)
-    model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
+    model = models.resnet34(weights=None)  # pretrained 사용 X, 이미 학습된 가중치 load할 것이므로
+    for param in model.parameters():
+        param.requires_grad = False
+
+    num_ftrs = model.fc.in_features
+    model.fc = torch.nn.Sequential(
+        torch.nn.Linear(num_ftrs, 1024),
+        torch.nn.ReLU(),
+        torch.nn.Dropout(0.4),
+        torch.nn.Linear(1024, num_classes)
+    )
+
     model.load_state_dict(torch.load("best_model.pth", map_location=device))
     model.to(device)
     model.eval()
     return model
+
 
 # -------------------------------
 # [5] Streamlit UI
