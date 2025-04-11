@@ -1,5 +1,5 @@
 import streamlit as st
-from PIL import Image
+from PIL import Image, ImageOps
 import torch
 import torch.nn as nn
 from torchvision import models, transforms
@@ -54,10 +54,12 @@ def load_model(num_classes):
 # [5] Streamlit UI
 # -------------------------------
 st.title("🌟 닮은꼴 연예인 분류기 🌟")
+# 파일 업로드 시
 uploaded_file = st.file_uploader("사진을 업로드해주세요!", type=['jpg', 'jpeg', 'png'])
 
 if uploaded_file:
     image = Image.open(uploaded_file).convert('RGB')
+    image = ImageOps.exif_transpose(image)
     st.image(image, caption="업로드한 사진", use_container_width=True)
 
     # 클래스 이름 불러오기
