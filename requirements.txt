@@ -1,5 +1,5 @@
-streamlit
-torch
-torchvision
+streamlit==1.44.1
+torch==2.6.0
+torchvision==0.21.0
 Pillow
 numpy
